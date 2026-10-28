@@ -31,15 +31,20 @@ public class MainActivity extends AppCompatActivity {
         Button button1 = findViewById(R.id.btn_calc);
 
 
-        // Implementar el boton (setOnClickListener)
-        button1.setOnClickListener(view -> {
+        button1.setOnClickListener(view -> calcularEdad());
 
-            String ageString = ageEdit.getText().toString();
-            int age = Integer.parseInt(ageString);
-            int dogAge = age * FACTOR_CANINO;
-            resultText.setText(getString(R.string.tu_edad_format, dogAge));
-        });
+    }
 
+    private void calcularEdad() {
+        String ageString = ageEdit.getText().toString();
+        int age = Integer.parseInt(ageString);
+        int dogAge = age * FACTOR_CANINO;
+        resultText.setText(getString(R.string.tu_edad_format, dogAge));
+    }
 
+    private void mostrarError(String mensaje) {
+        // 1. Mostrar el mensaje en el EditText (setError)
+        // 2. Poner el foco en el EditText (requestFocus)
+        // 3. Borrar el resultado anterior del TextView
     }
 }

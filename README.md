@@ -121,7 +121,7 @@ ageEdit = findViewById(R.id.age_input);
 resultText = findViewById(R.id.result_text);
 ```
 
-> ❓ ¿Qué pasaría si dejaras `EditText ageEdit = findViewById(...)` dentro de `onCreate()`?
+> ❓ ¿Qué pasaría si dejaras `EditText ageEdit = findViewById(...)` dentro de `onCreate()`? Si lo dejaras dentro de onCreate(), las variables serían locales y solo podríamos utilizarlas dentro de este método.
 
 ## Paso 8 · Saca la lógica del botón a un método
 

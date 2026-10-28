@@ -170,7 +170,7 @@ Comprueba que **la app nunca se cierra**:
 | `1` | "Si tu perro fuera humano tendría 7 años" |
 | `30` | "Si tu perro fuera humano tendría 210 años" |
 
-> 💡 Con el teclado numérico no puedes escribir `abc` ni `-4`. ¿Cómo comprobarías que el `try/catch` funciona? (Pista: quita `inputType` un momento.)
+> 💡 Con el teclado numérico no puedes escribir `abc` ni `-4`. ¿Cómo comprobarías que el `try/catch` funciona? (Pista: quita `inputType` un momento.) Para comprobar que el try/catch funciona, quitaría temporalmente el atributo android:inputType="number" del EditText en activity_main.xml. Así podría escribir letras, por ejemplo abc, y pulsar el botón Calcular. Lo he quitado, y aparece el mensaje de error correcto: Introduce un número entero válido.
 
 ## Paso 12 · Guarda y sube tu trabajo
 

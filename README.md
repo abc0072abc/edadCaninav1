@@ -33,13 +33,13 @@ Antes de arreglar nada, comprueba qué falla. Prueba estas entradas y anota qué
 
 | Entrada | ¿Qué ocurre? |
 |---|---|
-| *(campo vacío)* | |
-| `abc` | |
-| `3.5` | |
-| `0` | |
-| `-4` | |
-| `99999999999` | |
-| `400000000` | |
+| *(campo vacío)* | Se cierra la aplicación |
+| `abc` | Se cierra la aplicación |
+| `3.5` | Se cierra la aplicación |
+| `0` | Muestra 0 años |
+| `-4` | Muestra -28 años |
+| `99999999999` | Se cierra la aplicación |
+| `400000000` | Muestra -1494967296 años |
 
 > 💡 Cuando la app se cierre, abre el **Logcat** y busca la excepción. ¿Qué método la lanza? ¿Por qué el último caso no cierra la app pero da un resultado absurdo?
 

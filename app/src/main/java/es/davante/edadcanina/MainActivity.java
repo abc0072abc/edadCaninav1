@@ -78,6 +78,5 @@ public class MainActivity extends AppCompatActivity {
 
         // 3. Borrar el resultado anterior del TextView
         resultText.setText("");
-
     }
 }

@@ -71,7 +71,7 @@ En `res/values/strings.xml` añade tres textos nuevos:
 <string name="error_rango">La edad debe estar entre %1$d y %2$d años</string>
 ```
 
-> ❓ ¿Qué significan `%1$d` y `%2$d`? ¿En qué orden se rellenan?
+> ❓ ¿Qué significan `%1$d` y `%2$d`? ¿En qué orden se rellenan? Representa los números que pasamos, el %1$d hace referencia al primer número que pasaríamos y el %2$d al segundo. La d indica que son números enteros.
 
 ## Paso 5 · Restringe la entrada desde el layout
 

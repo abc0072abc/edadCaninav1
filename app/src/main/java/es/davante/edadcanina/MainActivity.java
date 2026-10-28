@@ -67,6 +67,7 @@ public class MainActivity extends AppCompatActivity {
         int dogAge = age * FACTOR_CANINO;
 
         resultText.setText(getString(R.string.tu_edad_format, dogAge));
+
     }
 
     private void mostrarError(String mensaje) {
@@ -78,5 +79,6 @@ public class MainActivity extends AppCompatActivity {
 
         // 3. Borrar el resultado anterior del TextView
         resultText.setText("");
+
     }
 }

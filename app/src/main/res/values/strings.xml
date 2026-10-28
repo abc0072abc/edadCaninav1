@@ -1,4 +1,5 @@
 <resources>
+
     <string name="app_name">Edad Canina</string>
     <string name="txt_titulo">Convertidor de edad canina</string>
     <string name="input_age">Introduzca la edad de su perro:</string>
@@ -8,4 +9,5 @@
     <string name="error_vacio">Introduce la edad de tu perro</string>
     <string name="error_no_numero">Introduce un número entero válido</string>
     <string name="error_rango">La edad debe estar entre %1$d y %2$d años</string>
+
 </resources>

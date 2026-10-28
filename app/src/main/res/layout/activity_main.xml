@@ -70,13 +70,4 @@
         android:id="@+id/btn_calc"
         />
 
-
-
-
-
-
-
-
-
-
 </androidx.appcompat.widget.LinearLayoutCompat>

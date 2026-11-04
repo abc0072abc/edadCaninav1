@@ -41,7 +41,7 @@ Antes de arreglar nada, comprueba qué falla. Prueba estas entradas y anota qué
 | `99999999999` | Se cierra la aplicación |
 | `400000000` | Muestra -1494967296 años |
 
-> 💡 Cuando la app se cierre, abre el **Logcat** y busca la excepción. ¿Qué método la lanza? ¿Por qué el último caso no cierra la app pero da un resultado absurdo?
+> 💡 Cuando la app se cierre, abre el **Logcat** y busca la excepción. ¿Qué método la lanza? Lanza at java.lang.Integer.parseInt ¿Por qué el último caso no cierra la app pero da un resultado absurdo? No se cierra la app porque el número 400000000 si cabe en un int, entonces lo puede utilizar. Y da un resultado absurdo porque el número que sale luego de multiplicar por 7 supera el valor máximo de un int, Java no da error con ninguna excepción, simplemente le da la vuelta al número y sale negativo.
 
 ## Paso 2 · Crea la rama de trabajo
 
@@ -186,8 +186,8 @@ Comprueba en GitHub que tu fork tiene ahora dos ramas: `main` y `v2-validacion`.
 
 ## ✅ Lista de comprobación
 
-- [ ] La app no se cierra con ninguna entrada.
-- [ ] Todos los textos están en `strings.xml` (ningún aviso *Hardcoded string*).
-- [ ] No quedan números mágicos en `MainActivity`.
-- [ ] `onCreate()` solo prepara la pantalla; la lógica está en `calcularEdad()`.
-- [ ] El trabajo está en la rama `v2-validacion`, no en `main`.
+- [✅] La app no se cierra con ninguna entrada.
+- [✅] Todos los textos están en `strings.xml` (ningún aviso *Hardcoded string*).
+- [✅] No quedan números mágicos en `MainActivity`.
+- [✅] `onCreate()` solo prepara la pantalla; la lógica está en `calcularEdad()`.
+- [✅] El trabajo está en la rama `v2-validacion`, no en `main`.

@@ -7,7 +7,9 @@ import android.widget.TextView;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.databinding.DataBindingUtil;
 
+import es.davante.edadcanina.databinding.ActivityMainBinding;
 
 
 public class MainActivity extends AppCompatActivity {
@@ -16,8 +18,8 @@ public class MainActivity extends AppCompatActivity {
     private static final int EDAD_MINIMA = 1;
     private static final int EDAD_MAXIMA = 30;
 
-    private EditText ageEdit;
-    private TextView resultText;
+    private ActivityMainBinding binding;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -25,19 +27,14 @@ public class MainActivity extends AppCompatActivity {
         EdgeToEdge.enable(this);
         setContentView(R.layout.activity_main);
 
-        // Declaramos variables
-        ageEdit = findViewById(R.id.age_input);
-        resultText = findViewById(R.id.result_text);
-        Button button1 = findViewById(R.id.btn_calc);
+        binding = DataBindingUtil.setContentView(this, R.layout.activity_main);
 
-
-        button1.setOnClickListener(view -> calcularEdad());
-
+        binding.btnCalc.setOnClickListener(view -> calcularEdad());
     }
 
     private void calcularEdad() {
         // 1. Leer el texto quitando espacios
-        String ageString = ageEdit.getText().toString().trim();
+        String ageString = binding.ageInput.getText().toString().trim();
 
         // 2. Comprobar si está vacío
         if (ageString.isEmpty()) {
@@ -62,23 +59,22 @@ public class MainActivity extends AppCompatActivity {
         }
 
         // 5. Calcular y mostrar el resultado
-        ageEdit.setError(null);
+        binding.ageInput.setError(null);
 
         int dogAge = age * FACTOR_CANINO;
 
-        resultText.setText(getString(R.string.tu_edad_format, dogAge));
-
+        binding.resultText.setText(getString(R.string.tu_edad_format, dogAge));
     }
 
     private void mostrarError(String mensaje) {
         // 1. Mostrar el mensaje en el EditText (setError)
-        ageEdit.setError(mensaje);
+        binding.ageInput.setError(mensaje);
 
         // 2. Poner el foco en el EditText (requestFocus)
-        ageEdit.requestFocus();
+        binding.ageInput.requestFocus();
 
         // 3. Borrar el resultado anterior del TextView
-        resultText.setText("");
+        binding.resultText.setText("");
 
     }
 }

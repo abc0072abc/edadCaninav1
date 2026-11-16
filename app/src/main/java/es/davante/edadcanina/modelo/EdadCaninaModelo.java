@@ -1,6 +1,10 @@
 package es.davante.edadcanina.modelo;
 
-public class EdadCaninaModelo {
+import androidx.databinding.BaseObservable;
+import androidx.databinding.Bindable;
+import es.davante.edadcanina.BR;
+
+public class EdadCaninaModelo extends BaseObservable {
 
     private static final int FACTOR_CANINO = 7;
     private static final int EDAD_MINIMA = 1;
@@ -9,21 +13,46 @@ public class EdadCaninaModelo {
     private String edadTexto = "";
     private int edadHumana = 0;
     private Validacion validacion = Validacion.SIN_CALCULAR;
-
+    @Bindable
     public String getEdadTexto() {
         return edadTexto;
     }
 
     public void setEdadTexto(String edadTexto) {
-        this.edadTexto = edadTexto;
-    }
+        if (this.edadTexto.equals(edadTexto)) {
+            return;
+        }
 
+        this.edadTexto = edadTexto;
+        setEdadHumana(0);
+        setValidacion(Validacion.SIN_CALCULAR);
+        notifyPropertyChanged(BR.edadTexto);
+    }
+    @Bindable
     public int getEdadHumana() {
         return edadHumana;
     }
-
+    @Bindable
     public Validacion getValidacion() {
         return validacion;
+    }
+
+    private void setEdadHumana(int edadHumana) {
+        if (this.edadHumana == edadHumana) {
+            return;
+        }
+
+        this.edadHumana = edadHumana;
+        notifyPropertyChanged(BR.edadHumana);
+    }
+
+    private void setValidacion(Validacion validacion) {
+        if (this.validacion == validacion) {
+            return;
+        }
+
+        this.validacion = validacion;
+        notifyPropertyChanged(BR.validacion);
     }
 
     public Validacion calcular() {
@@ -31,7 +60,7 @@ public class EdadCaninaModelo {
         String texto = edadTexto.trim();
 
         if (texto.isEmpty()) {
-            validacion = Validacion.VACIO;
+            setValidacion(Validacion.VACIO);
             return validacion;
         }
 
@@ -40,17 +69,17 @@ public class EdadCaninaModelo {
         try {
             edad = Integer.parseInt(texto);
         } catch (NumberFormatException e) {
-            validacion = Validacion.NO_ES_NUMERO;
+            setValidacion(Validacion.NO_ES_NUMERO);
             return validacion;
         }
 
         if (edad < EDAD_MINIMA || edad > EDAD_MAXIMA) {
-            validacion = Validacion.FUERA_DE_RANGO;
+            setValidacion(Validacion.FUERA_DE_RANGO);
             return validacion;
         }
 
-        edadHumana = edad * FACTOR_CANINO;
-        validacion = Validacion.CORRECTO;
+        setEdadHumana(edad * FACTOR_CANINO);
+        setValidacion(Validacion.CORRECTO);
 
         return validacion;
     }

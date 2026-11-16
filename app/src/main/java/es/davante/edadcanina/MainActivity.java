@@ -29,6 +29,8 @@ public class MainActivity extends AppCompatActivity {
 
         modelo = new EdadCaninaModelo();
 
+        binding.setModelo(modelo);
+
         binding.btnCalc.setOnClickListener(view -> calcularEdad());
     }
 
@@ -55,7 +57,6 @@ public class MainActivity extends AppCompatActivity {
 
             case CORRECTO:
                 binding.ageInput.setError(null);
-                binding.resultText.setText(getString(R.string.tu_edad_format, modelo.getEdadHumana()));
                 break;
 
             case SIN_CALCULAR:

@@ -8,6 +8,11 @@
         <variable
             name="modelo"
             type="es.davante.edadcanina.modelo.EdadCaninaModelo" />
+
+        <!-- Controlador que gestiona las acciones de los botones. -->
+        <variable
+            name="controlador"
+            type="es.davante.edadcanina.controlador.EdadCaninaControlador" />
     </data>
 
     <androidx.appcompat.widget.LinearLayoutCompat
@@ -80,7 +85,18 @@
         android:text="@string/btn_calc"
         android:textSize="22sp"
         android:id="@+id/btn_calc"
+        android:onClick="@{() -> controlador.calcular()}"
         />
+
+        <Button
+            android:id="@+id/btn_limpiar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="16dp"
+            android:textSize="22sp"
+            android:text="@string/limpiar"
+            android:onClick="@{() -> controlador.limpiar()}"
+            />
 
     </androidx.appcompat.widget.LinearLayoutCompat>
 </layout>

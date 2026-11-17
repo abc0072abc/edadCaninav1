@@ -5,6 +5,7 @@ import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.databinding.DataBindingUtil;
 
+import es.davante.edadcanina.controlador.EdadCaninaControlador;
 import es.davante.edadcanina.databinding.ActivityMainBinding;
 import es.davante.edadcanina.modelo.EdadCaninaModelo;
 
@@ -19,6 +20,9 @@ public class MainActivity extends AppCompatActivity {
     // Modelo que contiene los datos y la lógica de cálculo.
     private EdadCaninaModelo modelo;
 
+    // Controlador que gestiona las acciones de la interfaz.
+    private EdadCaninaControlador controlador;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -31,20 +35,13 @@ public class MainActivity extends AppCompatActivity {
 
         // Creamos el modelo y lo vinculamos al layout para que DataBinding pueda observar sus cambios.
         modelo = new EdadCaninaModelo();
+
+        // Creamos el controlador y le pasamos el modelo.
+        controlador = new EdadCaninaControlador(modelo);
+
+        // Vinculamos el modelo y el controlador con DataBinding.
         binding.setModelo(modelo);
-
-        binding.btnCalc.setOnClickListener(view -> calcularEdad());
+        binding.setControlador(controlador);
     }
 
-    private void calcularEdad() {
-
-        // Obtenemos el texto introducido y se lo pasamos al modelo para realizar la validación.
-        String ageString = binding.ageInput.getText().toString().trim();
-
-        modelo.setEdadTexto(ageString);
-
-        // El modelo realiza la validación y actualiza su estado.
-        // DataBinding se encarga de actualizar automáticamente la interfaz.
-        modelo.calcular();
-    }
 }

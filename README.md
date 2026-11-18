@@ -1,193 +1,64 @@
-# 🐶 EdadCanina · v1
+# 🐶 EdadCanina · v3
 
-Aplicación Android (Java) que calcula la edad "humana" de un perro multiplicando su edad por 7.
+## Versión v3-mvc
 
-Esta es la **versión 1**: funciona, pero no comprueba lo que escribe el usuario. Tu tarea es convertirla en la **versión 2** (rama `v2-validacion`), que valida la entrada y controla los errores sin que la app se cierre.
+Esta versión corresponde a la transformación de la aplicación EdadCanina a una arquitectura MVC utilizando DataBinding.
 
----
+### Cómo ejecutar la aplicación
 
-## Objetivos
+1. Clonar el repositorio.
+2. Abrir el proyecto con Android Studio.
+3. Seleccionar la rama `v3-mvc`.
+4. Sincronizar el proyecto con Gradle.
+5. Ejecutar la aplicación en un emulador o dispositivo Android.
 
-Al terminar sabrás:
-
-- Detectar por qué una app se cierra (`NumberFormatException`) y evitarlo con `try/catch`.
-- Validar datos de entrada: campo vacío, texto no numérico y rango de valores.
-- Mostrar errores al usuario con `EditText.setError()`.
-- Sustituir "números mágicos" por constantes.
-- Llevar los textos a `strings.xml` y usar formatos con varios parámetros.
-- Trabajar en una rama de Git distinta de `main`.
+La aplicación permite introducir la edad de un perro entre 1 y 30 años y calcular su edad equivalente en años humanos utilizando un factor de 7.
 
 ---
+## MVC y DataBinding
 
-## Paso 0 · Prepara el proyecto
+En esta versión de la aplicación se ha utilizado el patrón MVC para separar las responsabilidades del programa.
 
-1. Haz un **fork** de este repositorio (botón *Fork*) y clona tu fork:
-   ```bash
-   git clone https://github.com/TU_USUARIO/edadCaninav1.git
-   ```
-2. Ábrelo en Android Studio y ejecútalo en el emulador.
+- **Modelo:** `EdadCaninaModelo` contiene los datos de la aplicación y toda la lógica relacionada con la validación y el cálculo de la edad.
+- **Vista:** el XML de `activity_main.xml` representa la interfaz. DataBinding conecta los datos del modelo con los elementos visuales.
+- **Controlador:** `EdadCaninaControlador` recibe las acciones del usuario y ordena al modelo realizar las operaciones correspondientes.
 
-## Paso 1 · Rompe la app (a propósito)
+También se ha utilizado **DataBinding** para evitar acceder directamente a las vistas desde `MainActivity`. El modelo es observable y, cuando cambia su estado, la interfaz se actualiza automáticamente.
 
-Antes de arreglar nada, comprueba qué falla. Prueba estas entradas y anota qué pasa:
-
-| Entrada | ¿Qué ocurre? |
-|---|---|
-| *(campo vacío)* | Se cierra la aplicación |
-| `abc` | Se cierra la aplicación |
-| `3.5` | Se cierra la aplicación |
-| `0` | Muestra 0 años |
-| `-4` | Muestra -28 años |
-| `99999999999` | Se cierra la aplicación |
-| `400000000` | Muestra -1494967296 años |
-
-> 💡 Cuando la app se cierre, abre el **Logcat** y busca la excepción. ¿Qué método la lanza? ¿Por qué el último caso no cierra la app pero da un resultado absurdo?
-
-## Paso 2 · Crea la rama de trabajo
-
-```bash
-git checkout -b v2-validacion
-```
-
-Todo lo que hagas a partir de aquí irá en esta rama; `main` se queda como está.
-
-## Paso 3 · Corrige los fallos que ya trae la v1
-
-Antes de añadir nada nuevo, limpia lo que hay:
-
-1. **`activity_main.xml`**: busca la etiqueta de cierre `</TextView>>` y quita el `>` que sobra.
-2. **`strings.xml`**: en `tu_edad_format` hay una falta de ortografía ("fuero"). Corrígela.
-3. **Texto escrito "a fuego"**: el `android:hint="Ejemplo: 6"` del `EditText` está directamente en el layout. Llévalo a `strings.xml` con el nombre `hint_edad` y úsalo con `@string/hint_edad`.
-   > 💡 Android Studio marca este aviso en amarillo (*Hardcoded string*). Prueba `Alt + Enter` encima.
-4. **`MainActivity.java`**: hay tres `import` que no se usan (`Insets`, `ViewCompat`, `WindowInsetsCompat`). Elimínalos (`Ctrl + Alt + O`).
-
-## Paso 4 · Añade los mensajes de error
-
-En `res/values/strings.xml` añade tres textos nuevos:
-
-```xml
-<string name="error_vacio">Introduce la edad de tu perro</string>
-<string name="error_no_numero">Introduce un número entero válido</string>
-<string name="error_rango">La edad debe estar entre %1$d y %2$d años</string>
-```
-
-> ❓ ¿Qué significan `%1$d` y `%2$d`? ¿En qué orden se rellenan? Representa los números que pasamos, el %1$d hace referencia al primer número que pasaríamos y el %2$d al segundo. La d indica que son números enteros.
-
-## Paso 5 · Restringe la entrada desde el layout
-
-En el `EditText` (`@+id/age_input`) añade:
-
-```xml
-android:inputType="number"
-android:maxLength="2"
-android:gravity="center"
-android:importantForAutofill="no"
-```
-
-| Atributo | Para qué sirve |
-|---|---|
-| `inputType="number"` | Muestra el teclado numérico: sin letras, sin signo menos ni decimales. |
-| `maxLength="2"` | No deja escribir más de 2 cifras. |
-| `gravity="center"` | Centra el número en el campo. |
-| `importantForAutofill="no"` | Evita que el sistema ofrezca autocompletar. |
-
-> ⚠️ Esto **no sustituye** a la validación en Java: el campo puede quedarse vacío y nunca conviene fiarse solo de la interfaz. Por eso seguimos con el código.
-
-## Paso 6 · Sustituye los números mágicos por constantes
-
-Al principio de la clase `MainActivity` declara:
-
-```java
-private static final int FACTOR_CANINO = 7;
-private static final int EDAD_MINIMA = 1;
-private static final int EDAD_MAXIMA = 30; // ningún perro supera esta edad
-```
-
-y usa `FACTOR_CANINO` en lugar del `7`.
-
-## Paso 7 · Convierte las vistas en atributos de la clase
-
-Ahora `ageEdit` y `resultText` son variables locales de `onCreate()`. Como vas a usarlas desde otros métodos, decláralas como atributos:
-
-```java
-private EditText ageEdit;
-private TextView resultText;
-```
-
-y en `onCreate()` asígnalas **sin volver a escribir el tipo**:
-
-```java
-ageEdit = findViewById(R.id.age_input);
-resultText = findViewById(R.id.result_text);
-```
-
-> ❓ ¿Qué pasaría si dejaras `EditText ageEdit = findViewById(...)` dentro de `onCreate()`? Si lo dejaras dentro de onCreate(), las variables serían locales y solo podríamos utilizarlas dentro de este método.
-
-## Paso 8 · Saca la lógica del botón a un método
-
-El `setOnClickListener` debe quedar así de corto:
-
-```java
-button1.setOnClickListener(view -> calcularEdad());
-```
-
-Toda la lógica pasa a un método nuevo: `private void calcularEdad()`.
-
-## Paso 9 · Crea un método para mostrar errores
-
-```java
-private void mostrarError(String mensaje) {
-    // 1. Mostrar el mensaje en el EditText (setError)
-    // 2. Poner el foco en el EditText (requestFocus)
-    // 3. Borrar el resultado anterior del TextView
-}
-```
-
-## Paso 10 · Valida la entrada en `calcularEdad()`
-
-Implementa el método siguiendo este orden. En cuanto algo falle, llama a `mostrarError(...)` y sal con `return`:
-
-1. **Leer** el texto del `EditText` quitando espacios (`trim()`).
-2. **¿Está vacío?** → `error_vacio`. Recuerda que `Integer.parseInt("")` lanza `NumberFormatException`.
-3. **Convertir a `int`** dentro de un `try/catch (NumberFormatException e)` → si falla, `error_no_numero`.
-4. **¿Está en rango?** Si `age < EDAD_MINIMA || age > EDAD_MAXIMA` → `error_rango`. Para rellenar `%1$d` y `%2$d`:
-   ```java
-   getString(R.string.error_rango, EDAD_MINIMA, EDAD_MAXIMA)
-   ```
-5. **Todo correcto**: quita el error del campo (`setError(null)`), calcula `age * FACTOR_CANINO` y muestra el resultado con `tu_edad_format`.
-
-> ❓ ¿Por qué limitar la edad a 30 evita también el desbordamiento que viste en el Paso 1? Porque al multiplicar 30 por el factor 7, el resultado máximo es 210, un valor que está dentro del rango que puede almacenar un int.
-
-## Paso 11 · Vuelve a probar
-
-Comprueba que **la app nunca se cierra**:
-
-| Entrada | Resultado esperado |
-|---|---|
-| *(vacío)* | Error: "Introduce la edad de tu perro" |
-| `0` | Error: "La edad debe estar entre 1 y 30 años" |
-| `31` | Error de rango |
-| `1` | "Si tu perro fuera humano tendría 7 años" |
-| `30` | "Si tu perro fuera humano tendría 210 años" |
-
-> 💡 Con el teclado numérico no puedes escribir `abc` ni `-4`. ¿Cómo comprobarías que el `try/catch` funciona? (Pista: quita `inputType` un momento.) Para comprobar que el try/catch funciona, quitaría temporalmente el atributo android:inputType="number" del EditText en activity_main.xml. Así podría escribir letras, por ejemplo abc, y pulsar el botón Calcular. Lo he quitado, y aparece el mensaje de error correcto: Introduce un número entero válido.
-
-## Paso 12 · Guarda y sube tu trabajo
-
-```bash
-git add .
-git commit -m "Validación de la entrada y control de errores aritméticos"
-git push -u origin v2-validacion
-```
-
-Comprueba en GitHub que tu fork tiene ahora dos ramas: `main` y `v2-validacion`.
+Además, se ha creado un `BindingAdapter` llamado `AdaptadoresVista` para mostrar los mensajes de error según el estado de validación del modelo.
 
 ---
+## Explícalo con tus palabras
 
-## ✅ Lista de comprobación
+### 1. ¿Qué diferencia hay entre `@{...}` y `@={...}`?
 
-- [ ] La app no se cierra con ninguna entrada.
-- [ ] Todos los textos están en `strings.xml` (ningún aviso *Hardcoded string*).
-- [ ] No quedan números mágicos en `MainActivity`.
-- [ ] `onCreate()` solo prepara la pantalla; la lógica está en `calcularEdad()`.
-- [ ] El trabajo está en la rama `v2-validacion`, no en `main`.
+`@{...}` sirve para mostrar un dato en la interfaz. Es una conexión de una sola dirección, desde el modelo hacia la vista.
+
+`@={...}` permite una conexión en los dos sentidos. En este proyecto se utiliza en el `EditText`, por lo que cuando el usuario escribe, el valor se actualiza en el modelo y, si el modelo cambia, también se actualiza el campo de texto.
+
+### 2. ¿Qué ocurre desde que pulso Calcular hasta que aparece 42?
+
+Cuando pulso el botón **Calcular**, el XML llama al método `calcular()` del controlador. El controlador se encarga de pedir al modelo que haga el cálculo.
+
+El modelo comprueba primero si el valor es válido. Si introduzco `6`, lo convierte a número y lo multiplica por 7, obteniendo `42`. Después cambia su estado a `CORRECTO`.
+
+Como el modelo es observable, DataBinding detecta el cambio y actualiza automáticamente el `TextView`, mostrando el resultado `42`.
+
+### 3. ¿Qué cambiarías para utilizar un factor 6 en vez de 7 y por qué solo habría que modificar un archivo?
+
+Solo tendría que cambiar el valor de la constante `FACTOR_CANINO` dentro de `EdadCaninaModelo`, pasando de `7` a `6`.
+
+Esto es posible porque el cálculo está separado de la interfaz y del controlador. Por eso no tendría que modificar ni el XML ni `MainActivity` ni `EdadCaninaControlador`.
+
+---
+## Reto realizado
+
+### Restauración del estado al girar la pantalla
+
+Uno de los retos que he realizado ha sido conseguir que la aplicación mantenga su estado cuando se gira el dispositivo.
+
+Al girar la pantalla, Android puede destruir y volver a crear la `Activity`. Para evitar que se pierda la información, guardo en un `Bundle` el texto introducido y si se había realizado un cálculo correctamente.
+
+Después, cuando se vuelve a crear la `Activity`, recupero esos datos y los vuelvo a cargar en el modelo antes de realizar el binding.
+
+De esta forma, si por ejemplo introduzco `6`, pulso **Calcular** y aparece `42`, al girar el dispositivo el resultado se mantiene.
